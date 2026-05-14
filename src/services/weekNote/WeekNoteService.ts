@@ -16,10 +16,12 @@ import dayjs, { setWeekStart } from "../../utils/date/dayjsConfig";
  * @param week - Week number (1-53)
  * @returns Formatted filename without extension
  */
-function parseWeekNoteFormat(format: string, year: number, week: number): string {
+function parseWeekNoteFormat(format: string, year: number, week: number, month: number, day: number): string {
 	let result = format;
 	result = result.replace(/YYYY/g, year.toString());
 	result = result.replace(/WW/g, week.toString().padStart(2, "0"));
+    result = result.replace(/MM/g, month.toString().padStart(2, "0"));
+    result = result.replace(/DD/g, day.toString().padStart(2, "0"));
 	result = result.replace(/\[([^\]]+)\]/g, "$1");
 	return result;
 }
@@ -46,8 +48,10 @@ export class WeekNoteService {
 		const d = dayjs(date);
 		const year = d.year();
 		const week = d.week();
+        const month = d.month() + 1;
+        const day = d.date();
 		const format = settings.weekNoteFormat || "YYYY-[W]WW";
-		const filename = parseWeekNoteFormat(format, year, week);
+		const filename = parseWeekNoteFormat(format, year, week, month, day);
 		return `${filename}.md`;
 	}
 
