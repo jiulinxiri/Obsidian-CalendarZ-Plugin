@@ -1,7 +1,8 @@
 import type { PluginLike } from "../../core/types";
 import { SettingGroup } from "../ui/SettingGroup";
-import { ToggleSettingRenderer, TextSettingRenderer } from "../ui/SettingRenderer";
+import { ToggleSettingRenderer, TextSettingRenderer, PathSuggestSettingRenderer } from "../ui/SettingRenderer";
 import { createSettingHandler, ts, getSectionTitle } from "../settingUtils";
+import { buildTemplateSuggestions, buildFolderSuggestions } from "./notePathOptions";
 
 /**
  * Renders year note settings.
@@ -25,7 +26,11 @@ export function renderYearNoteSettings(containerEl: HTMLElement, plugin: PluginL
 	});
 
 	// Year note template setting
-	const yearNoteTemplateRenderer = new TextSettingRenderer(plugin, "templates/Yearly.md");
+	const yearNoteTemplateRenderer = new PathSuggestSettingRenderer(
+		plugin,
+		() => buildTemplateSuggestions(plugin, plugin.settings.yearNoteTemplate),
+		"templates/Yearly.md"
+	);
 	const handleYearNoteTemplateChange = createSettingHandler({ plugin, settingKey: "yearNoteTemplate" });
 	yearNoteTemplateRenderer.render(contentEl, {
 		name: ts(plugin, "yearNoteTemplate", "name"),
@@ -35,7 +40,11 @@ export function renderYearNoteSettings(containerEl: HTMLElement, plugin: PluginL
 	});
 
 	// Year note folder setting
-	const yearNoteFolderRenderer = new TextSettingRenderer(plugin, "Yearly");
+	const yearNoteFolderRenderer = new PathSuggestSettingRenderer(
+		plugin,
+		() => buildFolderSuggestions(plugin, plugin.settings.yearNoteFolder),
+		"Yearly"
+	);
 	const handleYearNoteFolderChange = createSettingHandler({ plugin, settingKey: "yearNoteFolder" });
 	yearNoteFolderRenderer.render(contentEl, {
 		name: ts(plugin, "yearNoteFolder", "name"),

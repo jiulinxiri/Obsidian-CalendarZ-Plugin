@@ -1,7 +1,8 @@
 import type { PluginLike } from "../../core/types";
 import { SettingGroup } from "../ui/SettingGroup";
-import { ToggleSettingRenderer, TextSettingRenderer } from "../ui/SettingRenderer";
+import { ToggleSettingRenderer, TextSettingRenderer, PathSuggestSettingRenderer } from "../ui/SettingRenderer";
 import { createSettingHandler, ts, getSectionTitle } from "../settingUtils";
+import { buildTemplateSuggestions, buildFolderSuggestions } from "./notePathOptions";
 
 /**
  * Renders week note settings.
@@ -25,7 +26,11 @@ export function renderWeekNoteSettings(containerEl: HTMLElement, plugin: PluginL
 	});
 
 	// Week note template setting
-	const weekNoteTemplateRenderer = new TextSettingRenderer(plugin, "templates/Weekly.md");
+	const weekNoteTemplateRenderer = new PathSuggestSettingRenderer(
+		plugin,
+		() => buildTemplateSuggestions(plugin, plugin.settings.weekNoteTemplate),
+		"templates/Weekly.md"
+	);
 	const handleWeekNoteTemplateChange = createSettingHandler({ plugin, settingKey: "weekNoteTemplate" });
 	weekNoteTemplateRenderer.render(contentEl, {
 		name: ts(plugin, "weekNoteTemplate", "name"),
@@ -35,7 +40,11 @@ export function renderWeekNoteSettings(containerEl: HTMLElement, plugin: PluginL
 	});
 
 	// Week note folder setting
-	const weekNoteFolderRenderer = new TextSettingRenderer(plugin, "Weekly");
+	const weekNoteFolderRenderer = new PathSuggestSettingRenderer(
+		plugin,
+		() => buildFolderSuggestions(plugin, plugin.settings.weekNoteFolder),
+		"Weekly"
+	);
 	const handleWeekNoteFolderChange = createSettingHandler({ plugin, settingKey: "weekNoteFolder" });
 	weekNoteFolderRenderer.render(contentEl, {
 		name: ts(plugin, "weekNoteFolder", "name"),

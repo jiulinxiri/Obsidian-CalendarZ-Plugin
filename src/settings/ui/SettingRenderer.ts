@@ -1,5 +1,6 @@
 import { Setting } from "obsidian";
 import type { PluginLike } from "../../core/types";
+import { InputPathSuggest } from "./InputPathSuggest";
 
 /**
  * Handler function type for setting value changes
@@ -196,6 +197,38 @@ export class TextSettingRenderer extends SettingRenderer<string> {
 }
 
 /**
+ * Text input + suggest setting renderer (Obsidian-native style).
+ * Keeps manual typing support while providing dropdown suggestions.
+ */
+export class PathSuggestSettingRenderer extends SettingRenderer<string> {
+	constructor(
+		plugin: PluginLike,
+		private getCandidates: () => string[],
+		private placeholder = ""
+	) {
+		super(plugin);
+	}
+
+	render(container: HTMLElement, config: SettingConfig<string>): void {
+		this.createBaseSetting(container, config).addText(text => {
+			text
+				.setPlaceholder(this.placeholder)
+				.setValue(config.value)
+				.onChange((value) => this.onChange(config, value));
+
+			new InputPathSuggest(
+				this.plugin.app,
+				text.inputEl,
+				this.getCandidates,
+				(value) => this.onChange(config, value)
+			);
+
+			return text;
+		});
+	}
+}
+
+/**
  * Slider setting renderer
  * Renders a setting with a numeric slider control
  */
@@ -291,5 +324,4 @@ export class ButtonSettingRenderer {
 		});
 	}
 }
-
 

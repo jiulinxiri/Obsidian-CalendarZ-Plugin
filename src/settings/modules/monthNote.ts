@@ -1,7 +1,8 @@
 import type { PluginLike } from "../../core/types";
 import { SettingGroup } from "../ui/SettingGroup";
-import { ToggleSettingRenderer, TextSettingRenderer } from "../ui/SettingRenderer";
+import { ToggleSettingRenderer, TextSettingRenderer, PathSuggestSettingRenderer } from "../ui/SettingRenderer";
 import { createSettingHandler, ts, getSectionTitle } from "../settingUtils";
+import { buildTemplateSuggestions, buildFolderSuggestions } from "./notePathOptions";
 
 /**
  * Renders month note settings.
@@ -25,7 +26,11 @@ export function renderMonthNoteSettings(containerEl: HTMLElement, plugin: Plugin
 	});
 
 	// Month note template setting
-	const monthNoteTemplateRenderer = new TextSettingRenderer(plugin, "templates/Monthly.md");
+	const monthNoteTemplateRenderer = new PathSuggestSettingRenderer(
+		plugin,
+		() => buildTemplateSuggestions(plugin, plugin.settings.monthNoteTemplate),
+		"templates/Monthly.md"
+	);
 	const handleMonthNoteTemplateChange = createSettingHandler({ plugin, settingKey: "monthNoteTemplate" });
 	monthNoteTemplateRenderer.render(contentEl, {
 		name: ts(plugin, "monthNoteTemplate", "name"),
@@ -35,7 +40,11 @@ export function renderMonthNoteSettings(containerEl: HTMLElement, plugin: Plugin
 	});
 
 	// Month note folder setting
-	const monthNoteFolderRenderer = new TextSettingRenderer(plugin, "Monthly");
+	const monthNoteFolderRenderer = new PathSuggestSettingRenderer(
+		plugin,
+		() => buildFolderSuggestions(plugin, plugin.settings.monthNoteFolder),
+		"Monthly"
+	);
 	const handleMonthNoteFolderChange = createSettingHandler({ plugin, settingKey: "monthNoteFolder" });
 	monthNoteFolderRenderer.render(contentEl, {
 		name: ts(plugin, "monthNoteFolder", "name"),
