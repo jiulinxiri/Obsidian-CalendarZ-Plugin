@@ -2,7 +2,7 @@
   "calendar": {
     "today": "Today",
     "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "viewTitle": "CalendarZ",
+    "viewTitle": "Calendar",
     "weekLabel": "W"
   },
   "sectionTitles": {
@@ -188,10 +188,10 @@
     }
   },
   "commands": {
-    "openCalendar": "Open CalendarZ view"
+    "openCalendar": "Open Calendar view"
   },
   "ribbon": {
-    "tooltip": "Open CalendarZ"
+    "tooltip": "Open Calendar"
   },
   "notifications": {
     "dailyNotesNotEnabled": "Please enable the Daily Notes core plugin first",

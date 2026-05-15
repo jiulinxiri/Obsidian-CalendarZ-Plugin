@@ -2,7 +2,7 @@
   "calendar": {
     "today": "今天",
     "weekdays": ["日", "一", "二", "三", "四", "五", "六"],
-    "viewTitle": "CalendarZ",
+    "viewTitle": "日历",
     "weekLabel": "周"
   },
   "sectionTitles": {
@@ -188,10 +188,10 @@
     }
   },
   "commands": {
-    "openCalendar": "打开 CalendarZ 视图"
+    "openCalendar": "打开日历视图"
   },
   "ribbon": {
-    "tooltip": "打开 CalendarZ"
+    "tooltip": "打开日历"
   },
   "notifications": {
     "dailyNotesNotEnabled": "请先启用日记核心插件",
