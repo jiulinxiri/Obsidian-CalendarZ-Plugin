@@ -210,6 +210,22 @@
 	min-height: var(--calz-day-min-size);
 }
 
+.calendarz__day-number {
+	display: block;
+	min-width: 2ch;
+	text-align: center;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+
+.calendarz__day--dots {
+	display: grid;
+	grid-template-rows: 1em var(--calz-dot-size);
+	place-items: center;
+	align-content: center;
+	row-gap: var(--calz-space-xs);
+}
+
 .calendarz__day:hover {
 	background-color: var(--calz-color-bg-hover);
 }
@@ -258,6 +274,14 @@
 	padding: var(--calz-space-xs);
 	gap: var(--calz-space-xs);
 	min-height: var(--calz-day-min-size);
+}
+
+.calendarz__week-number--dots {
+	display: grid;
+	grid-template-rows: 1em var(--calz-dot-size);
+	place-items: center;
+	align-content: center;
+	row-gap: var(--calz-space-xs);
 }
 
 .calendarz__week-number--clickable {
@@ -363,4 +387,23 @@
 .calendarz__settings-heading {
 	padding: 0;
 	margin: 0;
+}
+
+/* Path suggest inputs: keep input and suggestion dropdown at identical width. */
+.calendarz-path-setting .setting-item-control {
+	flex: 0 0 180px;
+	width: 180px;
+	min-width: 180px;
+	max-width: 180px;
+}
+
+.calendarz-path-setting .setting-item-control input[type="text"] {
+	width: 100%;
+	min-width: 180px;
+	max-width: 180px;
+}
+
+.calendarz-path-suggest .suggestion-item {
+	font-size: 12px;
+	line-height: 1.35;
 }

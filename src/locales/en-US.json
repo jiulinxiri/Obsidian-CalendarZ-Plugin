@@ -203,6 +203,12 @@
   "modal": {
     "confirmTitle": "Create Note",
     "confirmMessage": "Create note for {{date}}?",
+    "weekConfirmTitle": "Create Weekly Note",
+    "weekConfirmMessage": "Create weekly note for {{date}}?",
+    "monthConfirmTitle": "Create Monthly Note",
+    "monthConfirmMessage": "Create monthly note for {{date}}?",
+    "yearConfirmTitle": "Create Yearly Note",
+    "yearConfirmMessage": "Create yearly note for {{date}}?",
     "cancelButton": "Cancel",
     "createButton": "Create"
   }

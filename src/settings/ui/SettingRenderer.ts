@@ -210,7 +210,9 @@ export class PathSuggestSettingRenderer extends SettingRenderer<string> {
 	}
 
 	render(container: HTMLElement, config: SettingConfig<string>): void {
-		this.createBaseSetting(container, config).addText(text => {
+		const setting = this.createBaseSetting(container, config);
+		setting.settingEl.addClass("calendarz-path-setting");
+		setting.addText(text => {
 			text
 				.setPlaceholder(this.placeholder)
 				.setValue(config.value)
@@ -324,4 +326,3 @@ export class ButtonSettingRenderer {
 		});
 	}
 }
-

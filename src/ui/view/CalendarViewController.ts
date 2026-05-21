@@ -205,12 +205,17 @@ export class CalendarViewController {
 
 		if (this.settings.confirmBeforeCreate) {
 			const { ConfirmModal } = await import("../modals/ConfirmModal");
+			const t = this.getI18n().modal as Record<string, string>;
 			const dateRange = this.weekNoteService.getWeekDateRange(date, this.settings.weekStart);
 			new ConfirmModal(
 				this.deps.app,
 				this.getI18n(),
 				dateRange,
-				() => void this.createWeekNote(date)
+				() => void this.createWeekNote(date),
+				{
+					title: t.weekConfirmTitle,
+					message: t.weekConfirmMessage,
+				}
 			).open();
 		} else {
 			await this.createWeekNote(date);
@@ -254,12 +259,17 @@ export class CalendarViewController {
 
 		if (this.settings.confirmBeforeCreate) {
 			const { ConfirmModal } = await import("../modals/ConfirmModal");
+			const t = this.getI18n().modal as Record<string, string>;
 			const monthStr = dayjs(date).format("YYYY-MM");
 			new ConfirmModal(
 				this.deps.app,
 				this.getI18n(),
 				monthStr,
-				() => void this.createMonthNote(date)
+				() => void this.createMonthNote(date),
+				{
+					title: t.monthConfirmTitle,
+					message: t.monthConfirmMessage,
+				}
 			).open();
 		} else {
 			await this.createMonthNote(date);
@@ -293,12 +303,17 @@ export class CalendarViewController {
 
 		if (this.settings.confirmBeforeCreate) {
 			const { ConfirmModal } = await import("../modals/ConfirmModal");
+			const t = this.getI18n().modal as Record<string, string>;
 			const yearStr = dayjs(date).format("YYYY");
 			new ConfirmModal(
 				this.deps.app,
 				this.getI18n(),
 				yearStr,
-				() => void this.createYearNote(date)
+				() => void this.createYearNote(date),
+				{
+					title: t.yearConfirmTitle,
+					message: t.yearConfirmMessage,
+				}
 			).open();
 		} else {
 			await this.createYearNote(date);

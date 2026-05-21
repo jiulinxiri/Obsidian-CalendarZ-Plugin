@@ -231,6 +231,18 @@ export interface I18n {
 		confirmTitle: string;
 		/** Confirm modal message template with {{date}} placeholder */
 		confirmMessage: string;
+		/** Weekly note confirm modal title */
+		weekConfirmTitle: string;
+		/** Weekly note confirm modal message template with {{date}} placeholder */
+		weekConfirmMessage: string;
+		/** Monthly note confirm modal title */
+		monthConfirmTitle: string;
+		/** Monthly note confirm modal message template with {{date}} placeholder */
+		monthConfirmMessage: string;
+		/** Yearly note confirm modal title */
+		yearConfirmTitle: string;
+		/** Yearly note confirm modal message template with {{date}} placeholder */
+		yearConfirmMessage: string;
 		/** Cancel button text */
 		cancelButton: string;
 		/** Create button text */
@@ -253,5 +265,4 @@ const locales: Record<Language, I18n> = {
 export function loadI18n(language: Language): I18n {
 	return locales[language] || locales["en-US"];
 }
-
 

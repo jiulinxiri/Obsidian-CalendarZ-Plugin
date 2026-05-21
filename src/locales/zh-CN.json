@@ -203,6 +203,12 @@
   "modal": {
     "confirmTitle": "创建日记",
     "confirmMessage": "是否创建 {{date}} 的日记？",
+    "weekConfirmTitle": "创建周记",
+    "weekConfirmMessage": "是否创建 {{date}} 的周记？",
+    "monthConfirmTitle": "创建月记",
+    "monthConfirmMessage": "是否创建 {{date}} 的月记？",
+    "yearConfirmTitle": "创建年记",
+    "yearConfirmMessage": "是否创建 {{date}} 的年记？",
     "cancelButton": "取消",
     "createButton": "创建"
   }

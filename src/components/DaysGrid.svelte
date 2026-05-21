@@ -171,6 +171,9 @@ let {
 				classes.push(CSS_CLASSES.DAY_TODAY_THEMED);
 			}
 		}
+		if (displayMode === "dots") {
+			classes.push("calendarz__day--dots");
+		}
 		if (displayMode === "heatmap") {
 			if (cell.count > 0) {
 				classes.push(CSS_CLASSES.DAY_HEATMAP);
@@ -283,6 +286,7 @@ let {
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<div
 					class="{CSS_CLASSES.WEEK_NUMBER} {CSS_CLASSES.WEEK_NUMBER_CLICKABLE}"
+					class:calendarz__week-number--dots={displayMode === "dots"}
 					role="button"
 					tabindex="0"
 					onclick={() => handleWeekClick(row)}
@@ -302,7 +306,10 @@ let {
 					{/if}
 				</div>
 			{:else}
-				<div class={CSS_CLASSES.WEEK_NUMBER}>
+				<div
+					class={CSS_CLASSES.WEEK_NUMBER}
+					class:calendarz__week-number--dots={displayMode === "dots"}
+				>
 					{row.weekNumber}
 					{#if hasWeekTodoStatus(row)}
 						<div class={CSS_CLASSES.DOTS} aria-hidden="true">
@@ -332,7 +339,7 @@ let {
 				onclick={() => handleClick(cell)}
 			>
 				{#if !(displayMode === "heatmap" && heatmapHideDateNumbers)}
-					{cell.date.date()}
+					<span class="calendarz__day-number">{cell.date.date()}</span>
 				{/if}
 
 				{#if getDotCount(cell) > 0 || showGrayDot(cell) || (showTodayIndicator(cell) && !heatmapHideDateNumbers) || hasTodoStatus(cell)}

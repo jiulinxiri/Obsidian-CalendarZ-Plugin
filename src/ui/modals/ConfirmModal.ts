@@ -12,6 +12,10 @@ export class ConfirmModal extends Modal {
 	private dateStr: string;
 	/** Callback invoked when the user confirms creation */
 	private onConfirm: () => void;
+	/** Optional title override for non-daily note confirmations */
+	private title?: string;
+	/** Optional message template override for non-daily note confirmations */
+	private message?: string;
 
 	/**
 	 * Creates a new ConfirmModal instance
@@ -24,12 +28,18 @@ export class ConfirmModal extends Modal {
 		app: App,
 		i18n: I18nLike,
 		dateStr: string,
-		onConfirm: () => void
+		onConfirm: () => void,
+		options?: {
+			title?: string;
+			message?: string;
+		}
 	) {
 		super(app);
 		this.i18n = i18n;
 		this.dateStr = dateStr;
 		this.onConfirm = onConfirm;
+		this.title = options?.title;
+		this.message = options?.message;
 	}
 
 	/**
@@ -40,8 +50,11 @@ export class ConfirmModal extends Modal {
 		const { contentEl } = this;
 		const t = this.i18n.modal as Record<string, string>;
 
-		contentEl.createEl("h3", { text: t.confirmTitle ?? "Confirm" });
-		contentEl.createEl("p", { text: (t.confirmMessage ?? "Create note for {{date}}?").replace(/\{\{date\}\}/g, this.dateStr) });
+		const title = this.title ?? t.confirmTitle ?? "Confirm";
+		const message = this.message ?? t.confirmMessage ?? "Create note for {{date}}?";
+
+		contentEl.createEl("h3", { text: title });
+		contentEl.createEl("p", { text: message.replace(/\{\{date\}\}/g, this.dateStr) });
 
 		const buttonContainer = contentEl.createDiv({ cls: "modal-button-container" });
 
