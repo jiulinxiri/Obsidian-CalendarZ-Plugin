@@ -7,6 +7,7 @@ import { App, Notice, TFile, normalizePath } from "obsidian";
 import type { CalendarZSettings } from "../../core/types";
 import type { I18nLike } from "../../core/types";
 import dayjs from "../../utils/date/dayjsConfig";
+import { ensureNoteParentFolder } from "../noteFolder";
 
 /**
  * Parses a year note format string and replaces placeholders with actual values.
@@ -92,9 +93,9 @@ export class YearNoteService {
 				return;
 			}
 
-			await this.ensureYearNoteFolder(settings);
-
 			const path = this.getYearNotePath(date, settings);
+			await ensureNoteParentFolder(this.app, path);
+
 			const content = await this.createYearNoteContent(date, settings);
 			const file = await this.app.vault.create(path, content);
 			await this.app.workspace.openLinkText(file.path, "", false);
@@ -124,20 +125,5 @@ export class YearNoteService {
 		return templateContent
 			.replace(/{{year}}/g, year.toString())
 			.replace(/{{date}}/g, d.format("YYYY-MM-DD"));
-	}
-
-	/**
-	 * Ensures the year note folder exists, creating it if necessary.
-	 * @param settings - Plugin settings
-	 */
-	private async ensureYearNoteFolder(settings: CalendarZSettings): Promise<void> {
-		const folder = settings.yearNoteFolder.trim();
-		if (!folder) return;
-
-		const folderPath = normalizePath(folder);
-		const existingFolder = this.app.vault.getFolderByPath(folderPath);
-		if (!existingFolder) {
-			await this.app.vault.createFolder(folderPath);
-		}
 	}
 }

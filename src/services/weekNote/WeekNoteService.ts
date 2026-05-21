@@ -7,6 +7,7 @@ import { App, Notice, TFile, normalizePath } from "obsidian";
 import type { CalendarZSettings, WeekStart } from "../../core/types";
 import type { I18nLike } from "../../core/types";
 import dayjs, { setWeekStart } from "../../utils/date/dayjsConfig";
+import { ensureNoteParentFolder } from "../noteFolder";
 
 /**
  * Parses a week note format string and replaces placeholders with actual values.
@@ -114,9 +115,9 @@ export class WeekNoteService {
 				return;
 			}
 
-			await this.ensureWeekNoteFolder(settings);
-
 			const path = this.getWeekNotePath(date, settings);
+			await ensureNoteParentFolder(this.app, path);
+
 			const content = await this.createWeekNoteContent(date, settings);
 			const file = await this.app.vault.create(path, content);
 			await this.app.workspace.openLinkText(file.path, "", false);
@@ -151,20 +152,5 @@ export class WeekNoteService {
 			.replace(/{{week}}/g, week.toString().padStart(2, "0"))
 			.replace(/{{dateRange}}/g, dateRange)
 			.replace(/{{date}}/g, d.format("YYYY-MM-DD"));
-	}
-
-	/**
-	 * Ensures the week note folder exists, creating it if necessary.
-	 * @param settings - Plugin settings
-	 */
-	private async ensureWeekNoteFolder(settings: CalendarZSettings): Promise<void> {
-		const folder = settings.weekNoteFolder.trim();
-		if (!folder) return;
-
-		const folderPath = normalizePath(folder);
-		const existingFolder = this.app.vault.getFolderByPath(folderPath);
-		if (!existingFolder) {
-			await this.app.vault.createFolder(folderPath);
-		}
 	}
 }

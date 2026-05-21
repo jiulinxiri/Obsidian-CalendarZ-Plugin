@@ -7,6 +7,7 @@ import { App, Notice, TFile, normalizePath } from "obsidian";
 import type { CalendarZSettings } from "../../core/types";
 import type { I18nLike } from "../../core/types";
 import dayjs from "../../utils/date/dayjsConfig";
+import { ensureNoteParentFolder } from "../noteFolder";
 
 /**
  * Parses a month note format string and replaces placeholders with actual values.
@@ -95,9 +96,9 @@ export class MonthNoteService {
 				return;
 			}
 
-			await this.ensureMonthNoteFolder(settings);
-
 			const path = this.getMonthNotePath(date, settings);
+			await ensureNoteParentFolder(this.app, path);
+
 			const content = await this.createMonthNoteContent(date, settings);
 			const file = await this.app.vault.create(path, content);
 			await this.app.workspace.openLinkText(file.path, "", false);
@@ -131,20 +132,5 @@ export class MonthNoteService {
 			.replace(/{{month}}/g, month.toString().padStart(2, "0"))
 			.replace(/{{monthName}}/g, monthName)
 			.replace(/{{date}}/g, d.format("YYYY-MM-DD"));
-	}
-
-	/**
-	 * Ensures the month note folder exists, creating it if necessary.
-	 * @param settings - Plugin settings
-	 */
-	private async ensureMonthNoteFolder(settings: CalendarZSettings): Promise<void> {
-		const folder = settings.monthNoteFolder.trim();
-		if (!folder) return;
-
-		const folderPath = normalizePath(folder);
-		const existingFolder = this.app.vault.getFolderByPath(folderPath);
-		if (!existingFolder) {
-			await this.app.vault.createFolder(folderPath);
-		}
 	}
 }
