@@ -1,4 +1,4 @@
-import { App, Modal, Setting } from "obsidian";
+import { App, Modal, Setting, TFolder, normalizePath } from "obsidian";
 import type { I18nLike } from "../../core/types";
 import { CSS_CLASSES } from "../../core/constants";
 
@@ -66,8 +66,8 @@ export class IgnoredFoldersModal extends Modal {
 					.setCta()
 					.onClick(() => {
 						const value = folderInput.value.trim();
-						if (value && !this.ignoredFolders.includes(value)) {
-							this.ignoredFolders.push(value);
+						if (value) {
+							this.addIgnoredFolder(value);
 							folderInput.value = "";
 							this.renderFolderList();
 						}
@@ -88,6 +88,30 @@ export class IgnoredFoldersModal extends Modal {
 						this.close();
 					});
 			});
+	}
+
+	private addIgnoredFolder(value: string): void {
+		const folders = this.resolveIgnoredFolderPaths(value);
+		for (const folder of folders) {
+			if (!this.ignoredFolders.includes(folder)) {
+				this.ignoredFolders.push(folder);
+			}
+		}
+	}
+
+	private resolveIgnoredFolderPaths(value: string): string[] {
+		const normalizedValue = normalizePath(value);
+		if (normalizedValue.includes("/")) {
+			return [normalizedValue];
+		}
+
+		const matchingFolders = this.app.vault
+			.getAllLoadedFiles()
+			.filter((file): file is TFolder => file instanceof TFolder && file.name === normalizedValue)
+			.map(folder => folder.path)
+			.sort((a, b) => a.localeCompare(b));
+
+		return matchingFolders.length > 0 ? matchingFolders : [normalizedValue];
 	}
 
 	/**

@@ -21,6 +21,10 @@ export interface I18n {
 		viewTitle: string;
 		/** Label for week number column */
 		weekLabel: string;
+		/** Unit label for note count tooltip */
+		noteUnit: string;
+		/** Unit label for word count tooltip */
+		wordUnit: string;
 	};
 	/** Settings section titles */
 	sectionTitles: {
@@ -265,4 +269,3 @@ const locales: Record<Language, I18n> = {
 export function loadI18n(language: Language): I18n {
 	return locales[language] || locales["en-US"];
 }
-

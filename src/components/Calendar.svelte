@@ -75,6 +75,7 @@
 		<WeekdaysRow {i18n} weekStart={settings.weekStart} showWeekNumber={settings.showWeekNumber} />
 
 		<DaysGrid
+			{i18n}
 			{currentDate}
 			weekStart={settings.weekStart}
 			displayMode={settings.displayMode}

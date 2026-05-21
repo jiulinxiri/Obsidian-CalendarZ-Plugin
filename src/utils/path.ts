@@ -15,6 +15,10 @@ export function isPathIgnored(filePath: string, ignoredFolders: string[]): boole
 	const normalizedPath = obsidianNormalizePath(filePath);
 	return ignoredFolders.some(folder => {
 		const normalizedFolder = obsidianNormalizePath(folder);
+		if (!normalizedFolder.includes("/")) {
+			const segments = normalizedPath.split("/");
+			return segments.slice(0, -1).includes(normalizedFolder);
+		}
 		return normalizedPath === normalizedFolder || normalizedPath.startsWith(normalizedFolder + "/");
 	});
 }

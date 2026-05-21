@@ -3,7 +3,9 @@
     "today": "Today",
     "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     "viewTitle": "Calendar",
-    "weekLabel": "W"
+    "weekLabel": "W",
+    "noteUnit": "notes",
+    "wordUnit": "words"
   },
   "sectionTitles": {
     "basic": "Basic",

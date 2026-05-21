@@ -12,9 +12,11 @@
 		getWeekNumber,
 	} from "../utils/date";
 	import { CSS_CLASSES, GRID, DOTS, HEATMAP } from "../core/constants";
+	import type { I18n } from "../i18n";
 	import type { DateCount, DateTodoStatus, WeekTodoStatus } from "./types";
 
 	interface Props {
+		i18n: I18n;
 		currentDate: Date;
 		weekStart: WeekStart;
 		displayMode: DisplayMode;
@@ -37,6 +39,7 @@
 	}
 
 let {
+	i18n,
 	currentDate,
 	weekStart,
 	displayMode,
@@ -201,7 +204,16 @@ let {
 	}
 
 	function showGrayDot(cell: DayCell): boolean {
-		return displayMode === "dots" && cell.count === 0 && cell.isBeforeToday;
+		return false;
+	}
+
+	function getDayTooltip(cell: DayCell): string | undefined {
+		if (cell.count <= 0) return undefined;
+
+		const unit = isWordCount
+			? i18n.calendar.wordUnit
+			: i18n.calendar.noteUnit;
+		return `${cell.dateStr}: ${cell.count} ${unit}`;
 	}
 
 	function showTodayIndicator(cell: DayCell): boolean {
@@ -331,9 +343,8 @@ let {
 				style={getDayStyle(cell)}
 				data-date={cell.dateStr}
 				data-count={cell.count > 0 ? cell.count : undefined}
-				aria-label={cell.count > 0 || cell.isBeforeToday
-					? `${cell.dateStr}: ${cell.count} ${isWordCount ? "words" : "notes"}`
-					: undefined}
+				aria-label={getDayTooltip(cell)}
+				title={getDayTooltip(cell)}
 				role="button"
 				tabindex="0"
 				onclick={() => handleClick(cell)}
